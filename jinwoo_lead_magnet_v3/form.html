@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🎁 Subscribe & Unlock Content</title>
+  <style>
+    body { font-family: Arial; background: #141414; color: white; padding: 100px; text-align: center; }
+    .box { background: #1f1f1f; padding: 30px; border-radius: 10px; display: inline-block; }
+    input { padding: 10px; width: 80%; margin-top: 10px; border-radius: 5px; border: none; }
+    button { padding: 10px 20px; background: limegreen; border: none; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>🔒 Access Exclusive Content</h2>
+    <form id="leadForm">
+      <input type="text" name="name" placeholder="Your Name" required><br>
+      <input type="email" name="email" placeholder="Your Email" required><br>
+      <button type="submit">Get Instant Access</button>
+    </form>
+    <p id="result" style="margin-top:20px;"></p>
+  </div>
+  <script>
+    document.getElementById('leadForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      fetch('submit.php', { method: 'POST', body: formData })
+        .then(res => res.text())
+        .then(data => {
+          document.getElementById('result').innerHTML = data;
+          form.reset();
+        });
+    });
+  </script>
+</body>
+</html>
