@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>📊 Live Dashboard - Jinwoo Lead Magnet v5</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <style>
+    body { background: #111; color: white; font-family: Arial; padding: 30px; }
+    h2 { text-align: center; }
+    canvas { background: #fff; margin: 30px auto; border-radius: 10px; display: block; }
+  </style>
+</head>
+<body>
+<h2>📊 Live Lead Stats Dashboard</h2>
+<canvas id="dateChart" width="600" height="300"></canvas>
+<canvas id="countryChart" width="600" height="300"></canvas>
+
+<script>
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "your-project.firebaseapp.com",
+  databaseURL: "https://your-project-default-rtdb.firebaseio.com",
+  projectId: "your-project",
+  storageBucket: "your-project.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "YOUR_APP_ID"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const dateCounts = {};
+const countryCounts = {};
+
+db.ref("leads").on("value", snapshot => {
+  const data = snapshot.val();
+  for (const id in data) {
+    const lead = data[id];
+    const date = lead.date || "Unknown";
+    const country = lead.country || "Unknown";
+
+    dateCounts[date] = (dateCounts[date] || 0) + 1;
+    countryCounts[country] = (countryCounts[country] || 0) + 1;
+  }
+
+  new Chart(document.getElementById("dateChart"), {
+    type: "bar",
+    data: {
+      labels: Object.keys(dateCounts),
+      datasets: [{
+        label: "Leads per Date",
+        data: Object.values(dateCounts),
+        backgroundColor: "limegreen"
+      }]
+    },
+    options: { responsive: true, scales: { y: { beginAtZero: true } } }
+  });
+
+  new Chart(document.getElementById("countryChart"), {
+    type: "pie",
+    data: {
+      labels: Object.keys(countryCounts),
+      datasets: [{
+        label: "Country",
+        data: Object.values(countryCounts),
+        backgroundColor: ['limegreen','orange','dodgerblue','crimson','gold']
+      }]
+    },
+    options: { responsive: true }
+  });
+});
+</script>
+</body>
+</html>
