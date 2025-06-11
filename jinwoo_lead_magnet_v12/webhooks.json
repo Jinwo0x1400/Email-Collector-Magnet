@@ -1,0 +1,9 @@
+{
+  "casino2025": [
+    "https://hooks.zapier.com/hooks/catch/123456/abcde/",
+    "https://example.com/endpoint"
+  ],
+  "emailpush": [
+    "https://customcrm.com/api/leads"
+  ]
+}
