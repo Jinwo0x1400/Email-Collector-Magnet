@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>🌍 Subscribe Form - MultiLang</title>
+  <style>
+    body { background: #111; color: white; font-family: Arial; text-align: center; padding: 50px; }
+    input { padding: 10px; margin: 10px; width: 80%; border-radius: 5px; border: none; }
+    select, button { padding: 10px; margin-top: 20px; width: 85%; background: limegreen; color: white; border: none; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <div id="form">
+    <h2 id="title">Join Our List</h2>
+    <form id="leadForm">
+      <input type="text" name="name" placeholder="Your Name" required><br>
+      <input type="email" name="email" placeholder="Your Email" required><br>
+      <select id="lang" onchange="changeLang(this.value)">
+        <option value="en">🇺🇸 English</option>
+        <option value="id">🇮🇩 Indonesia</option>
+        <option value="my">🇲🇾 Melayu</option>
+      </select><br>
+      <button type="submit">Subscribe</button>
+    </form>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    const texts = {
+      en: { title: "Join Our List", button: "Subscribe" },
+      id: { title: "Gabung Daftar Kami", button: "Langganan" },
+      my: { title: "Sertai Senarai Kami", button: "Langgan" }
+    };
+
+    function changeLang(lang) {
+      document.getElementById("title").textContent = texts[lang].title;
+      document.querySelector("button").textContent = texts[lang].button;
+    }
+
+    document.getElementById('leadForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      fetch('submit.php', {
+        method: 'POST',
+        body: formData
+      }).then(res => res.text()).then(data => {
+        document.getElementById('result').innerHTML = data;
+        form.reset();
+      });
+    });
+  </script>
+</body>
+</html>
