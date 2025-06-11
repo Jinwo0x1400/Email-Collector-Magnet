@@ -8,7 +8,7 @@
 
 - ✅ Real-time **Tag Visualizer** (Chart.js donut per tag)
 - 🔔 Send new lead alert to **Discord/Slack via Webhook**
-- 📅 Auto-rotate `leads-YYYY-MM-DD.csv` per hari
+- 📅 Auto-rotate `leads-YYYY-MM-DD.csv` per day
 - 🧠 Still supports AI tagging, autoresponder, duplicate filter
 
 ---
