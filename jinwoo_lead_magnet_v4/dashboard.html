@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>📊 Lead Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <style>
+    body { font-family: Arial; background: #111; color: white; padding: 40px; }
+    canvas { background: white; margin-top: 20px; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h2>📈 Lead Collector Dashboard (Realtime)</h2>
+  <canvas id="chart" width="600" height="300"></canvas>
+  <script>
+    // TODO: Replace with your own Firebase config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "your-project.firebaseapp.com",
+      databaseURL: "https://your-project-default-rtdb.firebaseio.com",
+      projectId: "your-project",
+      storageBucket: "your-project.appspot.com",
+      messagingSenderId: "123456789",
+      appId: "YOUR_APP_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const counts = {};
+    db.ref("leads").on("value", snapshot => {
+      const data = snapshot.val();
+      for (const id in data) {
+        const date = data[id].date || "Unknown";
+        counts[date] = (counts[date] || 0) + 1;
+      }
+
+      const labels = Object.keys(counts);
+      const values = Object.values(counts);
+
+      new Chart(document.getElementById("chart"), {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [{
+            label: "Leads per Date",
+            data: values,
+            backgroundColor: "limegreen"
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
